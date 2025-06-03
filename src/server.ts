@@ -16,6 +16,11 @@ const transports = {
 export async function startHttpServer(port: number, mcpServer: McpServer): Promise<void> {
   const app = express();
 
+  // Add health check endpoint
+  app.get("/health", (req, res) => {
+    res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
+  });
+
   // Parse JSON requests for the Streamable HTTP endpoint only, will break SSE endpoint
   app.use("/mcp", express.json());
 
